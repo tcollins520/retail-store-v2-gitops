@@ -8,9 +8,9 @@ Retail Store v2 GitOps
 ├── Production Applications
 │   ├── Catalog  ✅ Synced / Healthy
 │   ├── Carts    ✅ Synced / Healthy
-│   ├── Checkout ⏳ Pending
-│   ├── Orders   ⏳ Pending
-│   └── UI       ⏳ Pending
+│   ├── Checkout ✅ Synced / Healthy
+│   ├── Orders   ✅ Synced / Healthy
+│   └── UI       ✅ Synced / Healthy
 ├── Deployment Workflow
 ├── Argo CD Dashboard
 └── Related Platform Repository
