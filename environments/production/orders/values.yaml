@@ -1,0 +1,35 @@
+# ==============================================================================
+# ORDERS SERVICE
+# Production Environment Overrides
+# ==============================================================================
+
+replicaCount: 2
+
+image:
+  repository: tcollins520/retail-store-orders
+  pullPolicy: IfNotPresent
+  tag: "1.3.0"
+
+app:
+  persistence:
+    provider: postgres
+    database: ordersdb
+
+    secret:
+      name: orders-db
+
+messaging:
+  provider: sqs
+
+  sqs:
+    topic: prod-orders-queue
+
+database:
+  endpoint: prod-orders-postgresql.cifguuuaskpf.us-east-1.rds.amazonaws.com
+  port: 5432
+  serviceName: orders-postgres
+
+secrets:
+  awsRegion: us-east-1
+  secretName: rds!db-f93868c7-6d9c-445d-b38a-572b3900e3a7
+  secretProviderClass: orders-db-secrets
