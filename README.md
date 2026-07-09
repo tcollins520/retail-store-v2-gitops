@@ -7,7 +7,7 @@ Retail Store v2 GitOps
 ├── Argo CD Multi-Source Applications
 ├── Production Applications
 │   ├── Catalog  ✅ Synced / Healthy
-│   ├── Carts    ⏳ Pending
+│   ├── Carts    ✅ Synced / Healthy
 │   ├── Checkout ⏳ Pending
 │   ├── Orders   ⏳ Pending
 │   └── UI       ⏳ Pending
