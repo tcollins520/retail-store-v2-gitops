@@ -1,0 +1,38 @@
+# ==============================================================================
+# UI SERVICE
+# Production Environment Overrides
+# ==============================================================================
+
+replicaCount: 2
+
+image:
+  repository: tcollins520/retail-store-ui
+  pullPolicy: IfNotPresent
+  tag: "v2"
+
+app:
+  theme: default
+
+  endpoints:
+    catalog: http://catalog
+    carts: http://carts
+    checkout: http://checkout
+    orders: http://orders
+
+ingress:
+  enabled: true
+
+  className: alb
+
+  hostname: shop.tinacloud.dev
+
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:162663626265:certificate/a4eb55e2-32e6-4241-8775-262a19640c13
+    alb.ingress.kubernetes.io/healthcheck-path: /
+    alb.ingress.kubernetes.io/success-codes: "200"
+    external-dns.alpha.kubernetes.io/hostname: shop.tinacloud.dev
