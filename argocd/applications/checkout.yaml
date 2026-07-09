@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+
+metadata:
+  name: checkout
+  namespace: argocd
+
+spec:
+  project: retail-store-production
+
+  sources:
+    # Helm chart source
+    - repoURL: https://github.com/tcollins520/retail-store-v2-platform-engineering.git
+      targetRevision: main
+      path: helm/checkout
+
+      helm:
+        releaseName: checkout
+        valueFiles:
+          - $values/environments/production/checkout/values.yaml
+
+    # Production values source
+    - repoURL: https://github.com/tcollins520/retail-store-v2-gitops.git
+      targetRevision: main
+      ref: values
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
