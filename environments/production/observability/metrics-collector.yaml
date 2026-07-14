@@ -1,0 +1,96 @@
+# -----------------------------------------------------------------------------
+# Retail Store v2
+# OpenTelemetry Metrics Collector
+#
+# Scrapes Prometheus metrics from Kubernetes workloads and exports them to
+# Amazon Managed Prometheus (AMP).
+#
+# Runs as a Deployment since a single collector can scrape the cluster.
+# -----------------------------------------------------------------------------
+
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+
+metadata:
+  name: retail-metrics
+  namespace: observability
+
+  labels:
+    app.kubernetes.io/name: retail-metrics
+    app.kubernetes.io/component: telemetry
+    app.kubernetes.io/part-of: retail-store-v2
+    app.kubernetes.io/managed-by: argocd
+
+spec:
+  mode: deployment
+
+  replicas: 1
+
+  serviceAccount: adot-collector
+
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+
+    requests:
+      cpu: 300m
+      memory: 512Mi
+
+  config:
+
+    receivers:
+
+      prometheus:
+
+        config:
+
+          scrape_configs: []
+
+    processors:
+
+      memory_limiter:
+        check_interval: 5s
+        limit_mib: 512
+        spike_limit_mib: 128
+
+      batch:
+        timeout: 10s
+        send_batch_size: 100
+
+    extensions:
+
+      health_check:
+        endpoint: 0.0.0.0:13133
+
+      sigv4auth:
+        region: us-east-1
+
+    exporters:
+
+      prometheusremotewrite:
+
+        endpoint: https://aps-workspaces.us-east-1.amazonaws.com/workspaces/ws-d5e80ad2-db90-413a-915a-56c0fd6b8ce7/api/v1/remote_write
+
+        auth:
+          authenticator: sigv4auth
+
+    service:
+
+      extensions:
+        - health_check
+        - sigv4auth
+
+      pipelines:
+
+        metrics:
+
+          receivers:
+            - prometheus
+
+          processors:
+            - memory_limiter
+            - batch
+
+          exporters:
+            - prometheusremotewrite
