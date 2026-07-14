@@ -45,7 +45,49 @@ spec:
 
         config:
 
-          scrape_configs: []
+          global:
+            scrape_interval: 30s
+
+          scrape_configs:
+
+            - job_name: kubernetes-pods
+
+              kubernetes_sd_configs:
+                - role: pod
+
+              relabel_configs:
+
+                - source_labels:
+                    [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+                  action: keep
+                  regex: "true"
+
+                - source_labels:
+                    [__meta_kubernetes_pod_annotation_prometheus_io_path]
+                  action: replace
+                  target_label: __metrics_path__
+
+                - source_labels:
+                    [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+                  action: replace
+                  regex: ([^:]+)(?::\d+)?;(\d+)
+                  replacement: $1:$2
+                  target_label: __address__
+
+                - action: labelmap
+                  regex: __meta_kubernetes_pod_label_(.+)
+
+                - source_labels:
+                    [__meta_kubernetes_namespace]
+                  target_label: namespace
+
+                - source_labels:
+                    [__meta_kubernetes_pod_name]
+                  target_label: pod
+
+                - source_labels:
+                    [__meta_kubernetes_pod_node_name]
+                  target_label: node
 
     processors:
 
@@ -53,6 +95,16 @@ spec:
         check_interval: 5s
         limit_mib: 512
         spike_limit_mib: 128
+
+      k8sattributes:
+        auth_type: serviceAccount
+
+        extract:
+          metadata:
+            - k8s.namespace.name
+            - k8s.deployment.name
+            - k8s.pod.name
+            - k8s.node.name
 
       batch:
         timeout: 10s
@@ -90,6 +142,7 @@ spec:
 
           processors:
             - memory_limiter
+            - k8sattributes
             - batch
 
           exporters:
