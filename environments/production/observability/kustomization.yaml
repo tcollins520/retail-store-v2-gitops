@@ -4,5 +4,6 @@ kind: Kustomization
 namespace: observability
 
 resources:
-  - collector.yaml
+  - traces-collector.yaml
   - instrumentation.yaml
+  - logs-collector.yaml
