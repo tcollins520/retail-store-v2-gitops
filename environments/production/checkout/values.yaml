@@ -6,7 +6,7 @@
 image:
   repository: 162663626265.dkr.ecr.us-east-1.amazonaws.com/retail-store-v2/checkout
   pullPolicy: IfNotPresent
-  tag: "sha-5f88237"
+  tag: "sha-c8db3c7"
 
 app:
   persistence:
