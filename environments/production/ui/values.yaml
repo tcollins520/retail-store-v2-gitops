@@ -8,7 +8,7 @@ replicaCount: 2
 image:
   repository: 162663626265.dkr.ecr.us-east-1.amazonaws.com/retail-store-v2/ui
   pullPolicy: IfNotPresent
-  tag: "v2"
+  tag: "sha-9de0e6b"
 
 app:
   theme: default
