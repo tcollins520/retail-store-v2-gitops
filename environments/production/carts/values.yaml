@@ -6,7 +6,7 @@
 image:
   repository: 162663626265.dkr.ecr.us-east-1.amazonaws.com/retail-store-v2/carts
   pullPolicy: IfNotPresent
-  tag: "sha-fdb0632"
+  tag: "sha-a360de5"
 
 database:
   RETAIL_CART_PERSISTENCE_PROVIDER: dynamodb
