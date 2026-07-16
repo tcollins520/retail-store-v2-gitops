@@ -4,7 +4,7 @@
 # ==============================================================================
 
 image:
-  repository: tcollins520/retail-store-cart
+  repository: 162663626265.dkr.ecr.us-east-1.amazonaws.com/retail-store-v2/carts
   pullPolicy: IfNotPresent
   tag: "sha-614ef5d"
 
