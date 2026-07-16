@@ -11,7 +11,7 @@ image:
   tag: "sha-33abefd"
 
 app:
-  theme: default
+  theme: green # Options: orange, default, green, teal
 
   endpoints:
     catalog: http://catalog
