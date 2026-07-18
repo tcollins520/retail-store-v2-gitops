@@ -11,7 +11,7 @@ image:
   tag: "sha-8bbbbca"
 
 app:
-  theme: orange # Options: orange, default, green, teal
+  theme: default # Options: orange, default, green, teal
 
   endpoints:
     catalog: http://catalog
